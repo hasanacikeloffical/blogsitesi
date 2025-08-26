@@ -1,40 +1,372 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link rel="stylesheet" href="css/bootstrap.min.css">
-   <title>hasanacikeloffical</title>
+  <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1"  />
+  <title>Hoşgeldiniz • Hasan Açıkel</title>
+  
+  <meta name="description" content="HTML, CSS ve JavaScript ile hazırlanmış hafif gri & beyaz temalı kişisel portföy şablonu." />
+  <style>
+    :root {
+      --bg: #ffffff;            /* beyaz */
+      --bg-soft: #f5f6f8;       /* hafif gri */
+      --text: #111827;          /* koyu metin */
+      --muted: #31343a;         /* ikincil metin */
+      --line: #e5e7eb;          /* ince sınır */
+      --accent: #3b82f6;        /* sade vurgu (link/hover) */
+      --radius: 16px;
+      --shadow: 0 10px 25px rgba(17, 24, 39, 0.06);
+      --shadow-soft: 0 4px 12px rgba(17, 24, 39, 0.04);
+      --container: 1120px;
+      
+    }
+
+    /* Reset & base */
+    * { box-sizing: border-box;   }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Noto Sans, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: linear-gradient(180deg, #e1e1f1 0%, #b2b2f0 50%, #b6b6f3 50%, #8b89f0 100%);
+
+    }
+    img { display: block; max-width: 100%; height: auto; }
+    a { color: inherit; text-decoration: none; }
+    p { line-height: 1.7; color: var(--muted); }
+
+    .container {
+      max-width: var(--container);
+      margin-inline: auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+    header {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: saturate(180%) blur(12px);
+      background: rgba(196, 195, 240, 0.7);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .brand { display: flex; gap: 12px; align-items: center; font-weight: 700; }
+    .brand .logo {
+      width: 50px; height: 50px; border-radius: 10px; background: var(--bg-soft); display: grid; place-items: center; border: 1px solid var(--line); box-shadow: var(--shadow-soft);
+    }
+
+    .nav-links { display: flex; gap: 18px; align-items: center; }
+    .nav-links a { padding: 8px 12px; border-radius: 10px; color: #374151; }
+    .nav-links a:hover { background: var(--bg-soft); }
+
+    .menu-btn { display: none; border: 1px solid var(--line); background: var(--bg); padding: 8px 10px; border-radius: 10px; }
+
+    /* Mobile menu */
+    .mobile { display: none; }
+    .mobile.open { display: grid; gap: 8px; padding-bottom: 14px; }
+    .mobile a { padding: 10px 12px; border-radius: 10px; background: var(--bg); border: 1px solid var(--line); }
+
+    /* Hero */
+    .hero { padding: 72px 0 36px; }
+    .hero-wrap { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 36px; align-items: center; }
+    .title { font-size: clamp(28px, 4vw, 44px); line-height: 1.1; margin: 0 0 10px; }
+    .subtitle { margin: 0 0 22px; color: var(--muted); }
+
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn { padding: 12px 16px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg); box-shadow: var(--shadow-soft); display: inline-flex; align-items: center; gap: 8px; }
+    .btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .btn.ghost { background: var(--bg); }
+    .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+
+    .profile { border-radius: 18px; border: 1px solid var(--line); background: var(--bg); padding: 10px; box-shadow: var(--shadow); }
+    .profile img { border-radius: 12px; }
+
+    /* Section */
+    section { padding: 36px 0; }
+    .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+    .section-head h2 { margin: 0; font-size: 22px; }
+    .section-head a { color: var(--muted); font-size: 14px; 
+    }
+
+    /* Skills */
+    .skills { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .chip { border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 10px 14px; text-align: center; box-shadow: var(--shadow-soft); font-weight: 600; }
+
+    /* Projects */
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .card { border: 1px solid var(--line); background: var(--bg); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-soft); display: flex; flex-direction: column; }
+    .card figure { aspect-ratio: 16/9; background: var(--bg-soft); border-bottom: 1px solid var(--line); }
+    .card .body { padding: 14px; display: grid; gap: 8px; }
+    .tags { display: flex; gap: 8px; flex-wrap: wrap; }
+    .tag { font-size: 12px; padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--bg-soft); }
+
+    /* Timeline */
+    .timeline { display: grid; gap: 14px;  }
+    .item { display: grid; grid-template-columns: 120px 1fr; gap: 14px; align-items: start; }
+    .item time { color: var(--muted); font-weight: 600; }
+    .item .panel { border: 1px solid var(--line); border-radius: 14px; padding: 12px; background: var(--bg); box-shadow: var(--shadow-soft); }
+
+    /* Contact */
+    form { display: grid; gap: 10px; }
+    .input { display: grid; gap: 6px; }
+    label { font-weight: 600; font-size: 14px; color: #374151; }
+    input, textarea { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: #fff; font-size: 15px; }
+    textarea { min-height: 140px; resize: vertical; }
+    .hint { color: var(--muted); font-size: 13px; }
+    .success { display:none; margin-top: 8px; color: #065f46; background: #ecfdf5; border: 1px solid #d1fae5; padding: 10px 12px; border-radius: 12px; }
+    .error { display:none; margin-top: 8px; color: #7f1d1d; background: #fef2f2; border: 1px solid #fee2e2; padding: 10px 12px; border-radius: 12px; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--line); padding: 22px 0; color: var(--muted); }
+
+    /* Utilities */
+    .muted { color: var(--muted); }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+
+    /* Responsive */
+    @media (max-width: 980px) {
+      .hero-wrap { grid-template-columns: 1fr; }
+      .skills { grid-template-columns: repeat(3, 1fr); }
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .item { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .menu-btn { display: inline-flex; }
+      .skills { grid-template-columns: repeat(2, 1fr); }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-   <nav class="navbar" style="background: #cd8931; margin-top: 50px; height: 70px; ">
-      <div style="box-shadow: 10px 10px 5px ;">
-         <a href="#" class="navbar-brand" style="padding: 25px 0 25px 100px; ">hasanacikeloffical</a>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <nav class="nav" aria-label="Ana menü">
+        <a class="brand" href="#" aria-label="Anasayfa">
+          <span class="logo" aria-hidden="true"><img src="profilimage.png" alt="image"></span>
+          <span>Hasan Açıkel</span>
+        </a>
+        <div class="nav-links" role="menubar">
+          <a role="menuitem" href="#hakkimda">Hakkımda</a>
+          <a role="menuitem" href="#projeler">Projeler</a>
+          <a role="menuitem" href="#deneyim">Deneyim</a>
+          <a role="menuitem" href="#iletisim">İletişim</a>
+        </div>
+        <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="mobileMenu" aria-label="Menü">
+          ☰ Menü
+        </button>
+      </nav>
+      <div id="mobileMenu" class="mobile" aria-label="Mobil menü">
+        <a href="#hakkimda">Hakkımda</a>
+        <a href="#projeler">Projeler</a>
+        <a href="#deneyim">Deneyim</a>
+        <a href="#iletisim">İletişim</a>
       </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-wrap">
       <div>
-         
-         <ul class="d-flex gap-5 m-0" style="list-style: none; padding-right: 120px;">
-            <li class="nav-item" style="box-shadow: 5px 5px 3px;">
-               <a class="nav-link" href="#" style="color: #3f1a0e;">Ana Sayfa</a>
-            </li>
-            <li class="nav-item" style="box-shadow: 5px 5px 3px;">
-               <a class="nav-link" href="#" style="color: #3f1a0e;">Projeler</a>
-            </li>
-            <li class="nav-item" style="box-shadow: 5px 5px 3px;">
-               <a class="nav-link" href="#" style="color: #3f1a0e;">İletişim</a>
-            </li>
-         </ul>
+        <h1 class="title">Ön Yüz Geliştirici & UI Meraklısı</h1>
+        <p class="subtitle">HTML, CSS ve JavaScript ile hızlı, erişilebilir ve şık web arayüzleri geliştiriyorum. Aşağıda yeteneklerimi, öne çıkan projelerimi ve deneyimlerimi bulabilirsiniz.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#projeler">Projeleri Gör</a>
+          <a class="btn ghost" href="#iletisim">Benimle İletişime Geç</a>
+        </div>
       </div>
-   </nav>
-    <div class="container mt-5" >
-      <div class="row">
-         <div class="col-md-12">
-            <h1 class="text-center">Hasan Açıkel</h1>
-            <p class="text-center">Selamlar, siteme hoşgeldiniz. Front end developer olarak kariyerimi icra etmekteyim.</p>
-         </div>
+      <aside class="profile">
+        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1200&auto=format&fit=crop" alt="Çalışma masasında dizüstü bilgisayar ve not defteri" />
+      </aside>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="hakkimda">
+    <div class="container">
+      <div class="section-head">
+        <h2>Hakkımda</h2>
+        <a href="#iletisim">CV İndir</a>
       </div>
-      
-    </div>     
-   <script src="script.js"></script>
+      <p>1+ yıldır frontend ekosisteminde modern arayüzler geliştiriyorum. Odaklandığım başlıklar: semantik HTML, duyarlı (responsive) CSS mimarisi ve vanilla/modern JavaScript ile etkileşimli bileşenler. Kod yazarken performans, erişilebilirlik ve yeniden kullanılabilirlik ilkelerini benimsiyorum.</p>
+      <div class="skills" aria-label="Yetenekler">
+        <div class="chip">HTML5</div>
+        <div class="chip">CSS3 / Flex / Grid</div>
+        <div class="chip">Responsive Tasarım</div>
+        <div class="chip">JavaScript (ES6+)</div>
+        <div class="chip">Performans</div>
+        <div class="chip">Git / GitHub</div>
+        <div class="chip">UI/UX Temelleri</div>
+        <div class="chip">Flutter ile Mobil Uygulamalar</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projeler">
+    <div class="container">
+      <div class="section-head">
+        <h2>Öne Çıkan Projeler</h2>
+        <a href="#">Tüm projeler</a>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <figure><img src="sitefotografi.png" alt="figure"></figure>
+          <div class="body">
+            <h3>Minimal Portföy</h3>
+            <p>Statik site jeneratörü olmadan saf HTML, CSS ve JS ile modern bir portföy.</p>
+            <div class="tags">
+              <span class="tag">HTML</span>
+              <span class="tag">CSS</span>
+              <span class="tag">JS</span>
+            </div>
+            <div class="hero-actions">
+              <a class="btn" href="#" target="_blank" rel="noreferrer noopener">Demo</a>
+              <a class="btn" href="#" target="_blank" rel="noreferrer noopener">Kod</a>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <figure><img src="notepadd.png" alt="notePadd"></figure>
+          <div class="body">
+            <h3>NotePadd</h3>
+            <p>Uygulamada kategoriler seçilip sayfalar özelleştirilebilir, tüm veriler tarih ve saat bilgisiyle kaydedilir. Karanlık ve aydınlık mod seçenekleri sunulur ve üyelik sayesinde kullanıcı bilgileri kolayca yönetilebilir.</p>
+            <div class="tags">
+              <span class="tag">Flutter</span>
+              <span class="tag">Firebase Cloud</span>
+            </div>
+            <div class="hero-actions">
+              <a class="btn" href="#">Demo</a>
+              <a class="btn" href="#">Kod</a>
+            </div>
+          </div>
+        </article>
+        <article class="card">
+          <figure></figure>
+          <div class="body">
+            <h3>Yakında yüklenecek</h3>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience -->
+  <section id="deneyim">
+    <div class="container">
+      <div class="section-head">
+        <h2>Deneyim & Eğitim</h2>
+        <span class="muted">Kısa zaman çizelgesi</span>
+      </div>
+      <div class="timeline">
+        <div class="item">
+          <time>2025</time>
+          <div class="panel">
+            <h3>Freelance Frontend</h3>
+            <p>Kurumsal müşteriler için responsive kurumsal sayfalar ve mikro etkileşimler geliştirdim.</p>
+          </div>
+        </div>
+        <div class="item">
+          <time>2024</time>
+          <div class="panel">
+            <h3></h3>
+            <p>UI bileşenleri, form doğrulama ve performans iyileştirmeleri üzerinde çalıştım.</p>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="iletisim">
+    <div class="container">
+      <div class="section-head">
+        <h2>İletişim</h2>
+        <span class="muted">Birlikte çalışalım</span>
+      </div>
+      <form id="contactForm" novalidate>
+        <div class="input">
+          <label for="name">Ad Soyad</label>
+          <input id="name" name="name" placeholder="Örn: Hasan Açıkel" required />
+        </div>
+        <div class="input">
+          <label for="email">E-posta</label>
+          <input id="email" name="email" type="email" placeholder="ornek@mail.com" required />
+          <span class="hint">E-postanızı üçüncü kişilerle paylaşmayız.</span>
+        </div>
+        <div class="input">
+          <label for="message">Mesaj</label>
+          <textarea id="message" name="message" placeholder="Mesaj Yaz…" required></textarea>
+        </div>
+        <button class="btn primary" type="submit">Gönder</button>
+        <div class="success" id="success">Mesajınız alındı. En kısa sürede dönüş yapacağım.</div>
+        <div class="error" id="error">Lütfen gerekli alanları kontrol edin.</div>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      © <span id="year"></span> Hasan Açıkel — <a href="https://www.linkedin.com/in/hasan-a%C3%A7%C4%B1kel-337b22326/" class="muted">LinkedIn</a> · <a href="https://github.com/hasanacikeloffical" class="muted">GitHub</a> · <a href="https://www.instagram.com/hasanacikeloffical/" class="muted">Instagram</a>
+    </div>
+  </footer>
+
+  <button id="backToTop" class="btn" aria-label="Yukarı dön" style="position: fixed; right: 16px; bottom: 16px; display:none;">↑ Yukarı</button>
+
+  <script>
+    // Yıl
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobil menü
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn.addEventListener('click', () => {
+      const open = mobileMenu.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', open);
+    });
+
+    // Smooth scroll + mobil menü kapat
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        menuBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Back to top
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      backToTop.style.display = window.scrollY > 600 ? 'inline-flex' : 'none';
+    });
+    backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // Basit form doğrulama (örnek)
+    const form = document.getElementById('contactForm');
+    const elSuccess = document.getElementById('success');
+    const elError = document.getElementById('error');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      elSuccess.style.display = 'none';
+      elError.style.display = 'none';
+
+      const data = new FormData(form);
+      const name = data.get('name')?.trim();
+      const email = data.get('email')?.trim();
+      const message = data.get('message')?.trim();
+
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      if (!name || !emailOk || !message) {
+        elError.style.display = 'block';
+        return;
+      }
+
+      // Demo: gerçek gönderim yerine başarı mesajı göster
+      elSuccess.style.display = 'block';
+      form.reset();
+    });
+  </script>
 </body>
 </html>
